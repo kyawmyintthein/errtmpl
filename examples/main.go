@@ -13,13 +13,16 @@ func main() {
 	data := make(map[string]interface{})
 	data["attr"] = "name"
 	data["value"] = ""
-	fmt.Println(tmpl.Error(data))
+	customErr := tmpl.TError(data)
+	fmt.Println(customErr)
+	fmt.Println(customErr.Error())
 
 	animal := new(Animal)
 	if animal.Name == "" {
-		data := make(map[string]interface{})
 		data["attr"] = "animal.Name"
 		data["value"] = animal.Name
-		fmt.Println(tmpl.Error(data))
+		err := tmpl.Error(data)
+		fmt.Println(err)
+		fmt.Println(err.Error())
 	}
 }

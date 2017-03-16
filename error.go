@@ -19,6 +19,10 @@ type (
 	}
 )
 
+func newErrorString(name, message string) errorString {
+	return errorString{name: name, message: message}
+}
+
 func new(name, message string) error {
 	return &errorString{name: name, message: message}
 }
@@ -33,6 +37,10 @@ func NewTemplate(name string, layout string) errorTemplate {
 
 func (tmpl *errorTemplate) Error(data map[string]interface{}) error {
 	return new(tmpl.name, tmpl.Parse(data))
+}
+
+func (tmpl *errorTemplate) TError(data map[string]interface{}) errorString {
+	return newErrorString(tmpl.name, tmpl.Parse(data))
 }
 
 func (tmpl *errorTemplate) Parse(data map[string]interface{}) string {
