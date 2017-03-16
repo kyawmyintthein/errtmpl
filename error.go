@@ -19,10 +19,6 @@ type (
 	}
 )
 
-func newError(name, message string) Error {
-	return Error{name: name, message: message}
-}
-
 func new(name, message string) error {
 	return &Error{name: name, message: message}
 }
@@ -31,30 +27,16 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
-func (e *Error) IsNil() bool {
-	if e.name == "" && e.message == "" {
-		return true
-	}
-	return false
-}
-
-func (e *Error) IsNotNil() bool {
-	if e.IsNil() {
-		return false
-	}
-	return true
+func (e *Error) HttpError(status int) HttpError {
+	return newHttpError(status, e.Error())
 }
 
 func NewTemplate(name string, layout string) ErrorTemplate {
 	return ErrorTemplate{Name: name, Layout: layout}
 }
 
-func (tmpl *ErrorTemplate) DefaultError(data map[string]interface{}) error {
+func (tmpl *ErrorTemplate) Error(data map[string]interface{}) error {
 	return new(tmpl.Name, tmpl.Parse(data))
-}
-
-func (tmpl *ErrorTemplate) Error(data map[string]interface{}) Error {
-	return newError(tmpl.Name, tmpl.Parse(data))
 }
 
 func (tmpl *ErrorTemplate) Parse(data map[string]interface{}) string {
@@ -73,3 +55,4 @@ func (tmpl *ErrorTemplate) Parse(data map[string]interface{}) string {
 	}
 	return layout
 }
+
