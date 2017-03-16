@@ -16,8 +16,8 @@ func NewValidator(name string, messageTmpl string, fn ValidatorFunc) Validator {
 	}
 }
 
-func (v *Validator) Validate(i interface{}, data map[string]interface{}) errorString {
-	var err errorString
+func (v *Validator) Validate(i interface{}, data map[string]interface{}) ErrorString {
+	var err ErrorString
 	if v.Fn(i) {
 		tmpl := NewTemplate(v.Name, v.MessageTemplate)
 		return tmpl.TError(data)

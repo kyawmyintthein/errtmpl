@@ -13,32 +13,32 @@ type (
 		layout string
 	}
 
-	errorString struct {
+	ErrorString struct {
 		name    string
 		message string
 	}
 )
 
-func newErrorString(name, message string) errorString {
-	return errorString{name: name, message: message}
+func newErrorString(name, message string) ErrorString {
+	return ErrorString{name: name, message: message}
 }
 
 func new(name, message string) error {
-	return &errorString{name: name, message: message}
+	return &ErrorString{name: name, message: message}
 }
 
-func (e *errorString) Error() string {
+func (e *ErrorString) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
-func (e *errorString) IsNil() bool {
+func (e *ErrorString) IsNil() bool {
 	if e.name == "" && e.message == "" {
 		return true
 	}
 	return false
 }
 
-func (e *errorString) IsNotNil() bool {
+func (e *ErrorString) IsNotNil() bool {
 	if e.IsNil() {
 		return false
 	}
@@ -53,7 +53,7 @@ func (tmpl *errorTemplate) Error(data map[string]interface{}) error {
 	return new(tmpl.name, tmpl.Parse(data))
 }
 
-func (tmpl *errorTemplate) TError(data map[string]interface{}) errorString {
+func (tmpl *errorTemplate) TError(data map[string]interface{}) ErrorString {
 	return newErrorString(tmpl.name, tmpl.Parse(data))
 }
 

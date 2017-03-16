@@ -20,7 +20,7 @@ type (
 	}
 )
 
-func ErrorWithHttpStatus(e errorString, status int) HttpError {
+func ErrorWithHttpStatus(e ErrorString, status int) HttpError {
 	return HttpError{
 		HttpStatus: status,
 		Code:       e.name,
