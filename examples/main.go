@@ -28,8 +28,11 @@ func main() {
 	}
 
 	id := 0
-	reqdata := make(map[string]interface{})
-	reqdata["attr"] = "id"
-	reqErr := errtmpl.Required(id, reqdata)
+	reqErr := errtmpl.Required(id, "user ID")
 	fmt.Println(reqErr.Error())
+
+	cusdata := map[string]interface{}{"attr": "id", "value": id}
+	tmpl1 := errtmpl.NewTemplate("ID required", "{{attr}} should no be blank. {{attr}} is {{value}}. Please check your data input.")
+	cusErr := errtmpl.RequiredWithTemplate(id, cusdata, tmpl1)
+	fmt.Println(cusErr.Error())
 }

@@ -9,10 +9,11 @@ const (
  * desc   : Validate empty or null value in golang type such as int, string, float, struct
  * return : Return custom error type TError
  */
-func Required(i interface{}, data map[string]interface{}) errorString {
+func Required(i interface{}, attr string) errorString {
 	requiredValidator := NewValidator("Required", RequiredDefaultErrorTemplate, func(v interface{}) bool {
 		return isEmpty(v)
 	})
+	data := map[string]interface{}{"attr": attr}
 	return requiredValidator.Validate(i, data)
 }
 
@@ -21,10 +22,12 @@ func Required(i interface{}, data map[string]interface{}) errorString {
  * desc   : Validate empty or null value in golang type such as int, string, float, struct
  * return : Return custom error type TError
  */
-func RequiredDefaultError(i interface{}, data map[string]interface{}) error {
+func RequiredDefaultError(i interface{}, attr string) error {
 	requiredValidator := NewValidator("Required", RequiredDefaultErrorTemplate, func(v interface{}) bool {
 		return isEmpty(v)
 	})
+
+	data := map[string]interface{}{"attr": attr}
 	return requiredValidator.ValidateDefaultError(i, data)
 }
 
