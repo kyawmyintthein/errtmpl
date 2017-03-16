@@ -31,6 +31,20 @@ func (e *errorString) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
+func (e *errorString) IsNil() bool {
+	if e.name == "" && e.message == "" {
+		return true
+	}
+	return false
+}
+
+func (e *errorString) IsNotNil() bool {
+	if e.IsNill() {
+		return false
+	}
+	return true
+}
+
 func NewTemplate(name string, layout string) errorTemplate {
 	return errorTemplate{name: name, layout: layout}
 }

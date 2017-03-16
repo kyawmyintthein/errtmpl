@@ -14,9 +14,10 @@ func main() {
 	data["attr"] = "name"
 	data["value"] = ""
 	customErr := tmpl.TError(data)
-	fmt.Println(customErr)
-	fmt.Println(customErr.Error())
-
+	if customErr.IsNil() {
+		fmt.Println(customErr)
+		fmt.Println(customErr.Error())
+	}
 	animal := new(Animal)
 	if animal.Name == "" {
 		data["attr"] = "animal.Name"
