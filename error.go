@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	errorTemplate struct {
+	ErrorTemplate struct {
 		name   string
 		layout string
 	}
@@ -45,19 +45,19 @@ func (e *Error) IsNotNil() bool {
 	return true
 }
 
-func NewTemplate(name string, layout string) errorTemplate {
-	return errorTemplate{name: name, layout: layout}
+func NewTemplate(name string, layout string) ErrorTemplate {
+	return ErrorTemplate{name: name, layout: layout}
 }
 
-func (tmpl *errorTemplate) DefaultError(data map[string]interface{}) error {
+func (tmpl *ErrorTemplate) DefaultError(data map[string]interface{}) error {
 	return new(tmpl.name, tmpl.Parse(data))
 }
 
-func (tmpl *errorTemplate) Error(data map[string]interface{}) Error {
+func (tmpl *ErrorTemplate) Error(data map[string]interface{}) Error {
 	return newError(tmpl.name, tmpl.Parse(data))
 }
 
-func (tmpl *errorTemplate) Parse(data map[string]interface{}) string {
+func (tmpl *ErrorTemplate) Parse(data map[string]interface{}) string {
 	var layout string = tmpl.layout
 	for key, val := range data {
 		switch t := val.(type) {
