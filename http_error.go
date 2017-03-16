@@ -2,7 +2,6 @@ package errtmpl
 
 import (
 	"net/http"
-	"strings"
 )
 
 const (
@@ -16,7 +15,7 @@ const (
 type (
 	HttpError struct {
 		HttpStatus int    `json:"status"`
-		Code       int    `json:"error_code"`
+		Code       string `json:"error_code"`
 		Message    string `json:"message"`
 	}
 )
@@ -24,15 +23,15 @@ type (
 func ErrorWithHttpStatus(e errorString, status int) HttpError {
 	return HttpError{
 		HttpStatus: status,
-		Code:       err.code,
-		Message:    err.message,
+		Code:       e.name,
+		Message:    e.message,
 	}
 }
 
-func DefaultErrorWithHttpStatus(err error, code string, status int) HttpError {
+func DefaultErrorWithHttpStatus(e error, name string, status int) HttpError {
 	return HttpError{
 		HttpStatus: status,
-		Code:       err.code,
-		Message:    err.message,
+		Code:       name,
+		Message:    e.Error(),
 	}
 }
