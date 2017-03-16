@@ -39,7 +39,7 @@ func (e *errorString) IsNil() bool {
 }
 
 func (e *errorString) IsNotNil() bool {
-	if e.IsNill() {
+	if e.IsNil() {
 		return false
 	}
 	return true

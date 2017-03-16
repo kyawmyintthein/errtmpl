@@ -26,4 +26,10 @@ func main() {
 		fmt.Println(err)
 		fmt.Println(err.Error())
 	}
+
+	id := 0
+	reqdata := make(map[string]interface{})
+	reqdata["attr"] = "id"
+	reqErr := errtmpl.Required(id, reqdata)
+	fmt.Println(reqErr.Error())
 }
