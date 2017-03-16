@@ -1,4 +1,4 @@
-package errtmpl
+package goerror
 
 import (
 	"fmt"
@@ -13,32 +13,32 @@ type (
 		layout string
 	}
 
-	ErrorString struct {
+	Error struct {
 		name    string
 		message string
 	}
 )
 
-func newErrorString(name, message string) ErrorString {
-	return ErrorString{name: name, message: message}
+func newError(name, message string) Error {
+	return Error{name: name, message: message}
 }
 
 func new(name, message string) error {
-	return &ErrorString{name: name, message: message}
+	return &Error{name: name, message: message}
 }
 
-func (e *ErrorString) Error() string {
+func (e *Error) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
-func (e *ErrorString) IsNil() bool {
+func (e *Error) IsNil() bool {
 	if e.name == "" && e.message == "" {
 		return true
 	}
 	return false
 }
 
-func (e *ErrorString) IsNotNil() bool {
+func (e *Error) IsNotNil() bool {
 	if e.IsNil() {
 		return false
 	}
@@ -49,12 +49,12 @@ func NewTemplate(name string, layout string) errorTemplate {
 	return errorTemplate{name: name, layout: layout}
 }
 
-func (tmpl *errorTemplate) Error(data map[string]interface{}) error {
+func (tmpl *errorTemplate) DefaultError(data map[string]interface{}) error {
 	return new(tmpl.name, tmpl.Parse(data))
 }
 
-func (tmpl *errorTemplate) TError(data map[string]interface{}) ErrorString {
-	return newErrorString(tmpl.name, tmpl.Parse(data))
+func (tmpl *errorTemplate) Error(data map[string]interface{}) Error {
+	return newError(tmpl.name, tmpl.Parse(data))
 }
 
 func (tmpl *errorTemplate) Parse(data map[string]interface{}) string {

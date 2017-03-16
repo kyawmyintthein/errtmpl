@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-import "errtmpl"
+import "goerror"
 
 type Animal struct {
 	Name string
@@ -9,30 +9,18 @@ type Animal struct {
 }
 
 func main() {
-	tmpl := errtmpl.NewTemplate("Required", "{{attr}} is required. {{attr}} = '{{value}}'.")
-	data := make(map[string]interface{})
-	data["attr"] = "name"
-	data["value"] = ""
-	customErr := tmpl.TError(data)
-	if customErr.IsNil() {
-		fmt.Println(customErr)
-		fmt.Println(customErr.Error())
-	}
-	animal := new(Animal)
-	if animal.Name == "" {
-		data["attr"] = "animal.Name"
-		data["value"] = animal.Name
-		err := tmpl.Error(data)
-		fmt.Println(err)
+	tmpl := goerror.NewTemplate("32", "{{attr}} is required. {{attr}} = '{{value}}'.")
+	data := map[string]interface{}{"attr": "name", "value": ""}
+	err := tmpl.Error(data)
+	if err.IsNotNil() {
 		fmt.Println(err.Error())
 	}
 
-	id := 0
-	reqErr := errtmpl.Required(id, "user ID")
-	fmt.Println(reqErr.Error())
-
-	cusdata := map[string]interface{}{"attr": "id", "value": id}
-	tmpl1 := errtmpl.NewTemplate("ID required", "{{attr}} should no be blank. {{attr}} is {{value}}. Please check your data input.")
-	cusErr := errtmpl.RequiredWithTemplate(id, cusdata, tmpl1)
-	fmt.Println(cusErr.Error())
+	animal := new(Animal)
+	if animal.Name == "" {
+		newTempl := goerror.NewTemplate("Required", `"{{attr}}" is required. {{attr}} should not be blank.`)
+		data := map[string]interface{}{"attr": "animal.Name"}
+		err := newTempl.DefaultError(data)
+		fmt.Println(err.Error())
+	}
 }
