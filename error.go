@@ -27,6 +27,14 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
+func NewHttpError(status int, errors []error) HttpError{
+    var messages []string
+    for  _, err := range errors{
+	messages = append(messages, err.Error())
+    }
+    return newHttpError(status, messages)
+}
+
 func (e *Error) HttpError(status int) HttpError {
 	return newHttpError(status, e.Error())
 }
