@@ -27,12 +27,16 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("(#%s) %s", e.name, e.message)
 }
 
-func NewHttpError(status int, errors []error) HttpError{
-    var messages []string
-    for  _, err := range errors{
-	messages = append(messages, err.Error())
-    }
-    return newHttpError(status, messages)
+func NewHttpError(status int, err error) HttpError {
+	return newHttpError(status, err.Error())
+}
+
+func NewHttpErrors(status int, errors []error) HttpError {
+	var messages []string
+	for _, err := range errors {
+		messages = append(messages, err.Error())
+	}
+	return newHttpError(status, messages)
 }
 
 func (e *Error) HttpError(status int) HttpError {
@@ -63,4 +67,3 @@ func (tmpl *ErrorTemplate) Parse(data map[string]interface{}) string {
 	}
 	return layout
 }
-
